@@ -79,13 +79,26 @@ exports.findAll = function (req, res) {
 //     });
 // };
 
-exports.findById = function(req, res) {
-    Project.findById(req.params.Code, function(err, project) {
-        if (err)
-        res.send(err);
-        res.json(project);
+exports.findById = function (req, res) {
+    Project.findById(req.params.Code, function (err, project) {
+      if (err) return res.send(err);
+      else if (project.response === "fail") {
+        return res
+          .status(422)
+          .json({
+            success: false,
+            error: true,
+            message: "This details doesn't exist!",
+          });
+      } else
+        return res.json({
+          data: project,
+          success: true,
+          error: false,
+          message: "Details fetched successfully!",
+        });
     });
-};
+  };
 
 
 
