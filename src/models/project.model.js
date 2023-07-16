@@ -148,19 +148,16 @@ Project.findAll = function (result) {
 
 
 Project.findById = function (Code, result) {
-    dbConn.query("SELECT * FROM emp_data inner join emp_contact on emp_data.Code = emp_contact.Code where emp_data.Code = ? ", Code, 
-    
-    function (err, res) {             
-        if(err) {
-            console.log("error: ", err);
-            result(err, null);
-        }
-        else{
-            result(null, res);
-        }
-    });   
-};
-
+    var sql = `call hrms.hrms_sp_get_test_details(?);`;
+    dbConn.query(sql, Code, function (err, res) {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        result(null, res[0][0]);
+      }
+    });
+  };
 
 
 // Project.findAll = function (result) {
